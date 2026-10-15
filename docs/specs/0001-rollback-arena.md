@@ -144,3 +144,5 @@ tools/headless     dotnet 命令行：机器人对机器人、浸泡测试、回
 ## 进展记录
 
 （实施中追加）
+
+- **2026-10-15 S0 骨架与检查体系**：用时约 20 分钟（单个 AI 会话，含独立审查约 5 分钟）。AI 写了全部内容：解决方案（Sim、Rollback 为 netstandard2.1 + C# 9，测试项目为 net9.0 + NUnit）、V3 架构守卫（用 System.Reflection.Metadata 扫 IL，没有新增依赖；21 个故意违规的夹具作为守卫自身的反向探针）、`.ai/verify.sh`、CI、`AGENTS.md`。我写了方案，审批了提交和推送。AI 的错和抓到它的检查：① NUnit 4.6.1 在 SDK 9.0.100 下编译不过，被构建抓到，降级到 4.4.0；② `dotnet test -v q` 吞掉了守卫的失败信息，被反向探针抓到；③ 守卫漏掉了 `System.Numerics` 浮点向量、`HashSet.CopyTo`/`RemoveWhere`、`Hashtable`/`ConcurrentDictionary`，被独立审查子代理实测抓到，已补规则和夹具。

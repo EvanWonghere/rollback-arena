@@ -1,1 +1,7 @@
 .DS_Store
+bin/
+obj/
+TestResults/
+*.user
+.vs/
+.idea/
