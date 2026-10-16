@@ -8,8 +8,9 @@
 | 做什么 | 命令 | 备注 |
 | --- | --- | --- |
 | 构建 | `dotnet build RollbackArena.sln -c Release` | 警告即错误（`Directory.Build.props`） |
-| 测试 | `dotnet test RollbackArena.sln -c Release` | 无已知失败；按区域筛选用 `--filter FullyQualifiedName~Architecture` |
-| 本项目的「完成」检查 | `.ai/verify.sh` | 构建 + 全部测试，几秒；CI（`.github/workflows/ci.yml`）跑的是同一个脚本 |
+| 测试 | `dotnet test RollbackArena.sln -c Release` | 已知失败：`HumanTodo` 分类（见下方「由人实现」）；按区域筛选用 `--filter FullyQualifiedName~Architecture` |
+| 只跑乘法测试 | `dotnet test RollbackArena.sln -c Release --filter FullyQualifiedName~Fixed64MulTests` | 人实现 `Fixed64.Mul` 之前全部失败，原因都应该是 `NotImplementedException` |
+| 本项目的「完成」检查 | `.ai/verify.sh` | 构建 + 除 `HumanTodo` 以外的全部测试，几秒；CI（`.github/workflows/ci.yml`）跑的是同一个脚本 |
 
 SDK 由 `global.json` 固定在 9.0.1xx；测试项目是 net9.0。
 
@@ -26,6 +27,11 @@ SDK 由 `global.json` 固定在 9.0.1xx；测试项目是 net9.0。
 - 给守卫加新规则时，必须在 `GuardFixtures.cs` 加一个故意违规的夹具和对应的 `ScannerCatchesFixture` 用例，先看它变红。
 - 状态只用值类型和定长数组（快照要整块复制）；模拟只接受「帧号 + 输入」，不读任何外部状态。
 - **定点乘法和回滚调度由人先写**（方案里的对照实验）。AI 不要实现 `Fixed64` 的乘法、`RollbackSession` 的调度逻辑，除非我在当次对话里明说。
+- 由人实现的部分，测试先写好并标上 `[Category("HumanTodo")]`，`.ai/verify.sh` 暂时排除这个分类。
+  **人实现 `Fixed64.Mul` 之后，删掉 `Fixed64MulTests` 上的 `HumanTodo` 分类，并去掉 `.ai/verify.sh` 里的 `--filter "TestCategory!=HumanTodo"`。**
+- `Fixed64`（Q32.32）的规则：溢出一律饱和（`-MinValue == MaxValue`）；乘法四舍五入，恰好一半时远离零。
+  参考实现在 `tests/Arena.Tests/Math/Fixed64Reference.cs`（BigInteger，只能放在测试项目里）。
+- 测试项目里不要用 `Arena.Tests.Math` 这个命名空间：它会遮住 `System.Math`（`GuardFixtures.cs` 里用到了）。`Math/` 目录下的测试用 `Arena.Tests.FixedMath`。
 - NUnit 固定在 4.4.0，4.6.1 在 SDK 9.0.100 下编译不过（见 `docs/pitfalls.md`）。
 
 ## 验证
