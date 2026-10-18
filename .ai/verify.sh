@@ -4,6 +4,6 @@
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
 
+python3 tools/generate_trig_table.py --check
 dotnet build RollbackArena.sln -c Release -nologo -v q
-# HumanTodo：由人实现、目前故意是红的测试（Fixed64 乘法，方案 S1）。人实现乘法后去掉这个排除。
-dotnet test RollbackArena.sln -c Release --no-build -nologo --filter "TestCategory!=HumanTodo"
+dotnet test RollbackArena.sln -c Release --no-build -nologo

@@ -5,10 +5,8 @@ using NUnit.Framework;
 namespace Arena.Tests.FixedMath;
 
 /// <summary>
-/// V1：Fixed64 乘法和 BigInteger 参考实现比对。乘法由人实现（方案 S1），在那之前这些测试都是红的，
-/// 而且只应该因为 NotImplementedException 而红。人实现乘法之后，去掉 HumanTodo 分类和 .ai/verify.sh 里的排除。
+/// V1：用户实现的 Fixed64 乘法与 BigInteger 参考实现比对，作为默认验收的一部分。
 /// </summary>
-[Category("HumanTodo")]
 public class Fixed64MulTests
 {
     [TestCaseSource(typeof(Fixed64MulCases), nameof(Fixed64MulCases.All))]
