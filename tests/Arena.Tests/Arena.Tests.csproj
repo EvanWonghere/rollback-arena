@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Arena.Sim\Arena.Sim.csproj" />
     <ProjectReference Include="..\..\src\Arena.Rollback\Arena.Rollback.csproj" />
+    <ProjectReference Include="..\..\tools\headless\headless.csproj" />
   </ItemGroup>
 
 </Project>

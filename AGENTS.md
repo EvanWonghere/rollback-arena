@@ -8,9 +8,11 @@
 | 做什么 | 命令 | 备注 |
 | --- | --- | --- |
 | 构建 | `dotnet build RollbackArena.sln -c Release` | 警告即错误（`Directory.Build.props`） |
-| 测试 | `dotnet test RollbackArena.sln -c Release` | S1 的全部测试已纳入默认检查；按区域筛选用 `--filter FullyQualifiedName~Architecture` |
+| 测试 | `dotnet test RollbackArena.sln -c Release` | S1/S2 全部测试已纳入默认检查；按区域筛选用 `--filter FullyQualifiedName~Gameplay` 或 `~Simulation` |
 | 只跑乘法测试 | `dotnet test RollbackArena.sln -c Release --filter FullyQualifiedName~Fixed64MulTests` | 用户已完成 `Fixed64.Mul`，197 个乘法测试通过 |
-| 本项目的「完成」检查 | `.ai/verify.sh` | 生成表一致性 + 构建 + 全部测试；S1 本机约 37–47 秒；CI（`.github/workflows/ci.yml`）跑同一个脚本 |
+| 本项目的「完成」检查 | `.ai/verify.sh` | 生成表一致性 + 构建 + 全部测试；S2 验收 629 项，本机本轮约 10 秒；CI（`.github/workflows/ci.yml`）跑同一个脚本 |
+| 无头机器人对战 | `dotnet run --project tools/headless -c Release -- --bots` | 正常结束输出 MATCH_OVER；可加 `--record inputs.csv --hashes live.csv` |
+| 输入回放 | `dotnet run --project tools/headless -c Release -- --replay inputs.csv --hashes replay.csv` | 校验和日志记录每步完成后的状态，帧号从 1 开始 |
 
 SDK 由 `global.json` 固定在 9.0.1xx；测试项目是 net9.0。
 
@@ -53,4 +55,6 @@ SDK 由 `global.json` 固定在 9.0.1xx；测试项目是 net9.0。
 
 - `docs/specs/0001-rollback-arena.md` —— 总方案（已定稿）：架构、验证设计 V1–V9、阶段与 done-when。
 - `docs/pitfalls.md` —— 踩坑库：现象、根因、判据。动相关模块前先搜一下。
-- `docs/handoff-*.md` —— 交接文档，只有最新一份有效：`docs/handoff-2026-10-18.md`（S1 完成，下一步 S2）。
+- `docs/specs/0002-gameplay.md` —— 用户定稿的 S2 玩法、数值与 16 组场景。
+- `docs/specs/0003-s2-implementation.md` —— S2 实施选择；验收数据见 `docs/verification/s2-simulation.md`。
+- `docs/handoff-*.md` —— 交接文档，只有最新一份有效：`docs/handoff-2026-10-18-s2.md`（S2 完成，下一步 S3）。
