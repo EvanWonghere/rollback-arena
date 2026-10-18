@@ -4,5 +4,6 @@
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
 
+python3 tools/generate_trig_table.py --check
 dotnet build RollbackArena.sln -c Release -nologo -v q
 dotnet test RollbackArena.sln -c Release --no-build -nologo
