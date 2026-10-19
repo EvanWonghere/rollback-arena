@@ -6,4 +6,8 @@
     <LangVersion>9</LangVersion>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="../Arena.Sim/Arena.Sim.csproj" />
+  </ItemGroup>
+
 </Project>

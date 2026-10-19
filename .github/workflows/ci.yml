@@ -3,6 +3,7 @@ name: CI
 on:
   push:
   pull_request:
+  workflow_dispatch:
 
 jobs:
   verify:
@@ -14,3 +15,15 @@ jobs:
         with:
           global-json-file: global.json
       - run: .ai/verify.sh
+
+  # 每次 push/PR 均实际执行 1000 seeds，并严格核对 TRX 用例集合。
+  v5-full:
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: global.json
+      - run: bash tools/verify_v5.sh

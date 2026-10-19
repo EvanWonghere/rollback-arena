@@ -6,5 +6,6 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../../src/Arena.Sim/Arena.Sim.csproj" />
+    <ProjectReference Include="../../src/Arena.Net/Arena.Net.csproj" />
   </ItemGroup>
 </Project>

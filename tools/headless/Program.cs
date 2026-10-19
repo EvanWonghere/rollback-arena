@@ -8,6 +8,7 @@ public static class Program
     {
         try
         {
+            if (args.Length > 0 && (args[0] == "--sync-test" || args[0] == "--rollback-bots")) return RollbackCli.Run(args);
             bool bots = false;
             string? replay = null, record = null, hashes = null;
             int maxFrames = 30_000;
